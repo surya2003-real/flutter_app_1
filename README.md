@@ -2,10 +2,12 @@
 ## How to see the code:
 ## All the screens have been loaded on different branches.
 ### The screen for the first task is in master branch
-### Second task Image_list_API
-### Third task Live_weather_app
-### Fourth task show_notification
-#### I didn't have the time to look for implementation of navigation
+### Second task: Image_list_API
+### Third task: Live_weather_app
+### Fourth task: show_notification
+#### I didn't have the time to look for implementation of navigation made different branches for the same
+#### clone the repo in android studio to see the app working in the emulator
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
