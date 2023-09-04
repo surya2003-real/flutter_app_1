@@ -1,12 +1,18 @@
 # flutter_app_2
 ## How to see the code:
-## All the screens have been loaded on different branches.
+All the screens have been loaded on different branches.
 ### The screen for the first task is in master branch
 ### Second task: Image_list_API
 ### Third task: Live_weather_app
 ### Fourth task: show_notification
 #### I didn't have the time to look for implementation of navigation made different branches for the same
 #### clone the repo in android studio to see the app working in the emulator
+## Note: before running the code in main.dart first click on get dependencies and then upgrade dependencies.
+alternatively run:
+'''
+flutter pub get
+flutter run
+'''
 
 ## Getting Started
 
