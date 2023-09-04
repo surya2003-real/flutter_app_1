@@ -11,37 +11,49 @@ class ImageDisplay extends StatefulWidget {
   const ImageDisplay({super.key});
 
   @override
-  _ImageDisplayState createState() => _ImageDisplayState();
+  WeatherAPP createState() => WeatherAPP();
 }
 
-class _ImageDisplayState extends State<ImageDisplay> {
+class WeatherApiService {
+  final String apiKey;
+  final String baseUrl = 'https://api.weatherapi.com/v1/current.json';
 
-  bool _isLoading = true;
+  WeatherApiService(this.apiKey);
+
+  Future<DataModel> fetchWeatherData(String city) async {
+    final response = await http.get(Uri.parse('$baseUrl?key=$apiKey&q=$city&aqi=yes'));
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return DataModel.fromJson(jsonData);
+    } else {
+      throw Exception('Failed to load weather data');
+    }
+  }
+}
+class WeatherAPP extends State<ImageDisplay> {
+
+  final String apiKey = 'ff45f6a24cb542269eb175211230409'; // Replace with your API key
+  late WeatherApiService apiService; // Declare it as a late variable
+
+  final TextEditingController _cityController = TextEditingController();
+  DataModel? _weatherData;
 
   @override
   void initState() {
     super.initState();
-    _getData();
+    apiService = WeatherApiService(apiKey); // Initialize apiService in initState
   }
-
-  DataModel? dataFromAPI;
-  _getData() async {
+  void _fetchWeatherData() async {
     try {
-      String url = "https://dummyjson.com/products";
-      http.Response res = await http.get(Uri.parse(url));
-      if (res.statusCode == 200) {
-        dataFromAPI = DataModel.fromJson(json.decode(res.body));
-        _isLoading = false;
-        setState(() {});
-      }
+      final weatherData = await apiService.fetchWeatherData(_cityController.text);
+      setState(() {
+        _weatherData = weatherData;
+      });
     } catch (e) {
-      debugPrint(e.toString());
+      print('Error fetching weather data: $e');
     }
   }
 
-  String img_url1='https://docs.flutter.dev/assets/images/dash/dash-fainting.gif';
-  String img_url2='https://i.imgur.com/Gi9cwgR.gif';
-  String img_url='https://docs.flutter.dev/assets/images/dash/dash-fainting.gif';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,43 +64,51 @@ class _ImageDisplayState extends State<ImageDisplay> {
         backgroundColor: Colors.green,
         elevation: 0.0,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            if(img_url==img_url1) {
-              img_url = img_url2;
-            }
-            else{
-              img_url=img_url1;
-            }
-          });
-        },
-        backgroundColor: Colors.grey[800],
-        child: Icon(Icons.add),
-      ),
-      body:  _isLoading
-          ? const Center(
-        child: CircularProgressIndicator(),
-      )
-          : ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.network(
-                  dataFromAPI!.products[index].thumbnail,
-                  width: 100,
-                ),
-                Text(dataFromAPI!.products[index].title.toString()),
-                Text("\$${dataFromAPI!.products[index].price.toString()}"),
-              ],
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       if(img_url==img_url1) {
+      //         img_url = img_url2;
+      //       }
+      //       else{
+      //         img_url=img_url1;
+      //       }
+      //     });
+      //   },
+      //   backgroundColor: Colors.grey[800],
+      //   child: Icon(Icons.add),
+      // ),
+      body:  Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Enter a city name:'),
+            SizedBox(height: 10),
+            TextField(
+              controller: _cityController,
+              decoration: InputDecoration(
+                hintText: 'City Name',
+              ),
             ),
-          );
-        },
-        itemCount: dataFromAPI!.products.length,
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _fetchWeatherData,
+              child: Text('Get Weather'),
+            ),
+            SizedBox(height: 20),
+            if (_weatherData != null)
+              Column(
+                children: [
+                  Text('City: ${_weatherData!.location.name.toString()}'),
+                  Text('Temperature: ${_weatherData!.current.tempC.toString()}°C'),
+                  Text('Weather: ${_weatherData!.current.condition.text.toString()}'),
+                  Text('Last Updated: ${_weatherData!.current.lastUpdated.toString()}'),
+                  Text('Local Time: ${_weatherData!.location.localtime.toString()}'),
+
+                ],
+              ),
+          ],
+        ),
       ),
 
     );
