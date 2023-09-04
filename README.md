@@ -1,7 +1,11 @@
 # flutter_app_2
-
-A new Flutter project.
-
+## How to see the code:
+## All the screens have been loaded on different branches.
+### The screen for the first task is in master branch
+### Second task Image_list_API
+### Third task Live_weather_app
+### Fourth task show_notification
+#### I didn't have the time to look for implementation of navigation
 ## Getting Started
 
 This project is a starting point for a Flutter application.
@@ -14,3 +18,5 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
