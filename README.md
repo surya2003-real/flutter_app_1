@@ -9,10 +9,10 @@ All the screens have been loaded on different branches.
 #### clone the repo in android studio to see the app working in the emulator
 ## Note: before running the code in main.dart first click on get dependencies and then upgrade dependencies.
 alternatively run:
-'''
+```
 flutter pub get
 flutter run
-'''
+```
 
 ## Getting Started
 
