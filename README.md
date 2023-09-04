@@ -1,7 +1,7 @@
 # flutter_app_2
 ## How to see the code:
 All the screens have been loaded on different branches.
-### The screen for the first task is in master branch
+### First task: master branch
 ### Second task: Image_list_API
 ### Third task: Live_weather_app
 ### Fourth task: show_notification
